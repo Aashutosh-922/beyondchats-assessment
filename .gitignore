@@ -1,0 +1,33 @@
+# --- Universal ---
+.DS_Store
+Thumbs.db
+.env
+
+# --- Node.js (Frontend & AI Worker) ---
+node_modules/
+npm-debug.log
+dist/
+build/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Laravel (Backend) ---
+/backend/vendor/
+/backend/node_modules/
+/backend/public/storage
+/backend/storage/*.key
+/backend/storage/framework/cache/data/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/views/*
+/backend/storage/logs/*
+!/backend/storage/app/public/.gitignore
+.phpunit.result.cache
+
+# --- Python (Scraper) ---
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/
