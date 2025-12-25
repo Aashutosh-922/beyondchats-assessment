@@ -54,3 +54,14 @@ cd frontend
 npm install
 npm run dev
 ```
+
+```mermaid
+graph TD
+    A[Python Scraper] -->|Scrapes Web| B(articles.json)
+    B -->|Seeds Data| C[Laravel Backend / DB]
+    D[Node.js AI Worker] -->|1. Fetches Article| C
+    D -->|2. Searches Google| E[External Blogs]
+    D -->|3. Scrapes Context| E
+    D -->|4. Generates Content| F[Gemini AI]
+    D -->|5. POST Updates| C
+    G[React Frontend] -->|Fetches Data| C
