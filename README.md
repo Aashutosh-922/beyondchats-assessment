@@ -21,8 +21,8 @@ This monolithic repository contains a 3-phase project implementing an automated 
 7. **React Frontend** displays the Original vs. Remastered articles in a grid.
 
 ## 🚀 Live Demo
-* **Frontend:** [Link to your Vercel/Netlify if deployed, otherwise "Local Setup Only"]
-* **Backend:** [Link if deployed, otherwise "Local Setup Only"]
+* **Status:** Local Setup Only
+* **Note:** Due to the complex nature of the backend (requiring Python for scraping, PHP/Laravel for the API, and a Node.js Headless Browser for the AI Worker), this project is designed to be run locally. Please refer to the **Local Setup Instructions** below to spin up the full stack in minutes.
 
 ---
 
@@ -55,13 +55,36 @@ npm install
 npm run dev
 ```
 
+## 📊 Architecture & Data Flow
+
 ```mermaid
 graph TD
-    A[Python Scraper] -->|Scrapes Web| B(articles.json)
-    B -->|Seeds Data| C[Laravel Backend / DB]
-    D[Node.js AI Worker] -->|1. Fetches Article| C
-    D -->|2. Searches Google| E[External Blogs]
-    D -->|3. Scrapes Context| E
-    D -->|4. Generates Content| F[Gemini AI]
-    D -->|5. POST Updates| C
-    G[React Frontend] -->|Fetches Data| C
+    User((User))
+    subgraph Frontend
+    A[React Dashboard]
+    end
+    
+    subgraph Backend
+    B[Laravel API]
+    C[(SQLite Database)]
+    end
+    
+    subgraph "AI Worker"
+    D[Node.js Script]
+    E[Puppeteer Scraper]
+    F[Google Gemini API]
+    end
+    
+    subgraph "Initial Setup"
+    G[Python Scraper]
+    end
+
+    G -->|Seeds Data| B
+    B <-->|Read/Write| C
+    User -->|Views| A
+    A -->|Fetches JSON| B
+    D -->|1. Gets Article| B
+    D -->|2. Search & Scrape| E
+    E -->|3. Context| D
+    D -->|4. Rewrites| F
+    D -->|5. Updates DB| B
